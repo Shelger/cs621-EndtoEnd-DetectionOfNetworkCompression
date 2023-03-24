@@ -1,5 +1,5 @@
 {
-    "ip": "Shelgers-Air.attlocal.net",
+    "ip": "10.10.12.99",
     "src_port_udp": "9876",
     "dst_port_udp": "8765",
     "head_syn": "1",
