@@ -88,8 +88,8 @@ int main() {
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr("10.10.12.99");
-    server_addr.sin_port = htons(8080);
+    server_addr.sin_addr.s_addr = inet_addr(cfg.ip);
+    server_addr.sin_port = htons(8081);
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         perror("Socket fails.");
@@ -113,12 +113,15 @@ int main() {
     memset(&udp_addr, 0, sizeof(udp_addr));
     udp_addr.sin_family = AF_INET;
     udp_addr.sin_addr.s_addr = inet_addr(cfg.ip);
-    udp_addr.sin_port = htons(atoi(cfg.dst_port_udp));
+    udp_addr.sin_port = htons(cfg.dst_port_udp);
     int udp_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     
     int val = IP_PMTUDISC_DO;
-    server_addr.sin_port = htons(atoi(cfg.src_port_udp));
-    // bindSocket(udp_sockfd, (struct sockaddr*)&client_addr, sizeof(server_addr));
+    struct sockaddr_in client_addr;
+    client_addr.sin_family = AF_INET;
+    client_addr.sin_addr.s_addr = INADDR_ANY;;
+    client_addr.sin_port = htons(cfg.src_port_udp);
+    bindSocket(udp_sockfd, (struct sockaddr*)&client_addr, sizeof(client_addr));
     setsockopt(udp_sockfd, IPPROTO_IP, IP_MTU_DISCOVER, &val, sizeof(val));
 
     sendUdp(&cfg, udp_sockfd, &udp_addr, sizeof(udp_addr), 0);
@@ -140,8 +143,8 @@ int main() {
     }
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr("10.10.12.99");
-    server_addr.sin_port = htons(8765);
+    server_addr.sin_addr.s_addr = inet_addr(cfg.ip);
+    server_addr.sin_port = htons(cfg.port_tcp);
     int server_fd = connect(p3_sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
     if (server_fd < 0) {
         perror("Connection failed.");

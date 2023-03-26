@@ -7,23 +7,15 @@
 
 typedef struct {
     char *ip;
-    char *src_port_udp, *dst_port_udp;
-    char *head_syn, *tail_syn;
-    char *port_tcp;
+    int src_port_udp, dst_port_udp;
+    int head_syn, tail_syn;
+    int port_tcp;
     int size_udp;
     int inter_time;
     int num_udp_packet;
     int ttl;
 } ConfigInfo;
 
-void
-freeConfig(ConfigInfo *cfg) {
-    free(cfg->ip);
-    free(cfg->src_port_udp);
-    free(cfg->head_syn);
-    free(cfg->tail_syn);
-    free(cfg->port_tcp);
-}
 
 // Helper function to read a file into a buffer
 char* read_file(const char* filename) {
@@ -119,15 +111,15 @@ parseJSON(char *input, ConfigInfo* config)
         if (strcmp(token, "ip") == 0) {
             config->ip = value;
         } else if (strcmp(token, "src_port_udp") == 0) {
-            config->src_port_udp = value;
+            config->src_port_udp = atoi(value);
         } else if (strcmp(token, "dst_port_udp") == 0) {
-            config->dst_port_udp = value;
+            config->dst_port_udp = atoi(value);
         } else if (strcmp(token, "head_syn") == 0) {
-            config->head_syn = value;
+            config->head_syn = atoi(value);
         } else if (strcmp(token, "tail_syn") == 0) {
-            config->tail_syn = value;
+            config->tail_syn = atoi(value);
         } else if (strcmp(token, "port_tcp") == 0) {
-            config->port_tcp = value;
+            config->port_tcp = atoi(value);
         } else if (strcmp(token, "size_udp") == 0) {
             config->size_udp = atoi(value);
         } else if (strcmp(token, "inter_time") == 0) {

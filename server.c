@@ -116,8 +116,8 @@ int main(void) {
     struct sockaddr_in server_addr, client_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr("10.10.12.99");
-    server_addr.sin_port = htons(8080);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(8081);
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (sockfd < 0) {
         perror("Socket fails.");
@@ -150,7 +150,7 @@ int main(void) {
     memset(&udp_addr, 0, sizeof(udp_addr));
     udp_addr.sin_family = AF_INET;
     udp_addr.sin_addr.s_addr = INADDR_ANY;
-    udp_addr.sin_port = htons(atoi(cfg.dst_port_udp));
+    udp_addr.sin_port = htons(cfg.dst_port_udp);
     int new_sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     bindSocket(new_sockfd, (struct sockaddr*)&udp_addr, sizeof(udp_addr));
     // struct sockaddr_in client_addr;
@@ -174,7 +174,7 @@ int main(void) {
         perror("Socket fails.");
         exit(1);
     }
-    server_addr.sin_port = htons(8765);
+    server_addr.sin_port = htons(cfg.port_tcp);
     bs = bindSocket(sockfd, (struct sockaddr*)&server_addr, sizeof(server_addr));
     LOGP("Listening...\n");
     sockls = listenSocket(sockfd);
