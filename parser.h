@@ -14,6 +14,7 @@ typedef struct {
     int inter_time;
     int num_udp_packet;
     int ttl;
+    char *src_ip;
 } ConfigInfo;
 
 
@@ -128,6 +129,8 @@ parseJSON(char *input, ConfigInfo* config)
             config->num_udp_packet = atoi(value);
         } else if (strcmp(token, "ttl") == 0){
             config->ttl = atoi(value);
+        } else if (strcmp(token, "src_ip") == 0) {
+            config->src_ip = value;
         }
         token = strtok(NULL, "{}\"\t\n,: ");
     }

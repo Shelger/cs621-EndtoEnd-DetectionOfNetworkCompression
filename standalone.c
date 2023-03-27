@@ -80,7 +80,7 @@ send_syn_packet(ConfigInfo *cfg, int port_num) {
     iph->ttl = cfg->ttl;
     iph->protocol = IPPROTO_TCP;
     iph->check = 0;
-    iph->saddr = inet_addr(cfg->ip);
+    iph->saddr = inet_addr(cfg->src_ip);
     iph->daddr = dst.sin_addr.s_addr;
 
     iph->check = csum((unsigned short *) packet, iph->tot_len >> 1);
@@ -110,7 +110,7 @@ send_syn_packet(ConfigInfo *cfg, int port_num) {
         uint16_t tcp_length;
     } psh;
 
-    psh.src_addr = inet_addr(cfg->ip);
+    psh.src_addr = inet_addr(cfg->src_ip);
     psh.dest_addr = dst.sin_addr.s_addr;
     psh.placeholder = 0;
     psh.protocol = IPPROTO_TCP;
